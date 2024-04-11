@@ -51,7 +51,6 @@ std::string g_TempPackageName = "Latest.zip";
 std::string g_NorthstarCustomDir = "R2Northstar\\mods\\Northstar.Custom";
 std::string g_NorthstarServerDir = "R2Northstar\\mods\\Northstar.CustomServers";
 std::string g_NorthstarClientDir = "R2Northstar\\mods\\Northstar.Client";
-std::string g_NorthstarCNCustomDir = "R2Northstar\\mods\\NorthstarCN.Custom";
 
 std::string f_DedicatedConfig = "R2northstar\\mods\\Northstar.CustomServers\\mod\\cfg\\autoexec_ns_server.cfg";
 std::string f_ClientConfig = "R2northstar\\mods\\Northstar.Client\\mod\\cfg\\autoexec_ns_client.cfg";
@@ -59,7 +58,7 @@ std::string f_ClientConfig = "R2northstar\\mods\\Northstar.Client\\mod\\cfg\\aut
 std::string f_DedicatedConfigBackup = "UpdaterTemp\\autoexec_ns_server.cfg";
 std::string f_ClientConfigBackup = "UpdaterTemp\\autoexec_ns_client.cfg";
 
-std::string g_GnuUnzipURL = "https://updater-wolf109909.vercel.app/unzip.exe";
+std::string g_GnuUnzipURL = "https://gitee.com/R2NorthstarCN/compass/releases/download/0/unzip.exe";
 std::string g_MasterServerAddress = "nscn.wolf109909.top";
 std::string g_MasterServerVersionEndPoint = "https://nscn.wolf109909.top/version/query";
 bool g_ShouldPerformUpdate = false;
@@ -323,17 +322,17 @@ bool CheckUnzipEnvironment()
 {
 	if (!GetUnzipApplication())
 	{
-		std::cout << dye::yellow("[*] 警告：无法在根目录下找到GNU Unzip,正在尝试获取...\n");
+		std::cout << dye::yellow("[*] 警告：未找到GNU Unzip,正在下载...\n");
 		
 
 		if (!TryDownloadUnzip())
 		{
-			std::cout << dye::red("[-] 错误：无法下载 GNU Unzip,下载失败!\n");
+			std::cout << dye::red("[-] 错误：无法下载 GNU Unzip,下载失败\n");
 			return false;
 		}
 	}
 	return true;
-	std::cout << dye::green("[*] 成功获取GNU Unzip!\n");
+	std::cout << dye::green("[*] 下载GNU Unzip完成\n");
 }
 bool GetLatestNorthstarVersion()
 {
@@ -494,7 +493,7 @@ bool downloadLatestRelease()
 			}
 			else
 			{
-				std::cout << dye::red("[-] 错误：无法完成下载,服务器可能出错!请在北极星CN官方开黑啦中通知我们!\n");
+				std::cout << dye::red("[-] 错误：无法完成下载,服务器可能出错!请在北极星CN官方QQ群中通知我们!\n");
 				return false;
 			}
 			curl_easy_cleanup(curl);
@@ -599,7 +598,7 @@ void CleanTempFiles()
 	std::cout << dye::aqua("[*] 正在移除临时文件...") << std::endl;
 	if (!IsPathExist(g_TempFolderName))
 	{
-		std::cout << dye::red("[-] 错误：未发现临时文件,程序执行可能出现了未知的严重问题!") << std::endl;
+		std::cout << dye::red("[-] 错误：未发现临时文件,程序执行可能出现未知问题") << std::endl;
 	}
 	else
 	{
@@ -700,15 +699,6 @@ bool RemovePreviousInstall()
 		std::cout << dye::aqua("[*] 正在移除旧版 Northstar.CustomServers ...") << std::endl;
 		std::filesystem::remove_all(g_NorthstarServerDir);
 	}
-	if (!IsPathExist(g_NorthstarCNCustomDir))
-	{
-		std::cout << dye::yellow("[-] 文件检查： NorthstarCN.Custom 不存在") << std::endl;
-	}
-	else
-	{
-		std::cout << dye::aqua("[*] 正在移除旧版 NorthstarCN.Custom ...") << std::endl;
-		std::filesystem::remove_all(g_NorthstarCNCustomDir);
-	}
 	
 	return true;
 }
@@ -717,9 +707,9 @@ void DrawErrorPrompt(int err)
 	MessageBoxA(
 		0,
 		"更新北极星CN时遇到了致命错误,北极星CN可能出现无法连接服务器、崩溃等情况。请尝试重新启动北极星CN,"
-		"并将log发送至官方开黑啦以让我们获得更多信息。错误代码:" +
+		"并将log发送至官方QQ群以让我们获得更多信息。错误代码:" +
 			err,
-		"NorthstarCN自动更新",
+		"NorthStarCN自动更新",
 		MB_ICONERROR | MB_OK);
 }
 bool ShouldDoUpdate() 
@@ -821,7 +811,7 @@ int main(int argc, char* argv[])
 		MessageBoxA(
 			0,
 			"未能找到北极星CN主程序，将执行清洁安装。",
-			"NorthstarCN自动更新", MB_ICONINFORMATION | MB_OK);
+			"NorthStarCN自动更新", MB_ICONINFORMATION | MB_OK);
 		g_CleanInstall = true;
 
 	}
